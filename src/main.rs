@@ -25,7 +25,7 @@ fn test() {
     let target = 1283;
 
     let strategy = best_choice(&range,target);
-    let rule = Rule{range:range,target:target};
+    let rule = Rule{range,target};
     if strategy.max==0{
         return;
     }
@@ -45,8 +45,7 @@ fn best_choice(range:&Vec<u32>,target:u32)->Strategy{
         add_list.push(one);
     }
 
-    let mut chooselist = Vec::with_capacity(range.len()*range.len());
-    chooselist = add_list[0].clone();
+    let mut chooselist = add_list[0].clone();
     for i in add_list{
         let mut ret = Vec::with_capacity(chooselist.len());
         for j in chooselist{
@@ -57,9 +56,9 @@ fn best_choice(range:&Vec<u32>,target:u32)->Strategy{
         chooselist = ret;
     }
 
-    if chooselist.len()==0{
+    if chooselist.is_empty(){
         println!("没有必胜策略");
-        return Strategy{first:0,max:0};
+        Strategy{first:0,max:0}
     }
     else{
         let sele = Select::with_theme(&ColorfulTheme::default())
@@ -75,7 +74,7 @@ fn best_choice(range:&Vec<u32>,target:u32)->Strategy{
         else{
             println!("我方先出，第一局出{}，对方当前局和我方下一局凑够{}会获胜",target%max,max);
         }
-        return Strategy{first:target%max,max:max};
+        Strategy{first:target%max,max}
     }
 }
 
